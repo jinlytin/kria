@@ -2,49 +2,49 @@ import Combine
 import Foundation
 
 @MainActor
-final class RandomAlarmController: ObservableObject {
+final class RandomClockViewModel: ObservableObject {
     @Published private(set) var isEnabled = false
     @Published private(set) var statusText = "未开启"
     @Published private(set) var minIntervalMinutes = 3
     @Published private(set) var maxIntervalMinutes = 5
 
-    private var schedulerTask: Task<Void, Never>?
-    private let popupCoordinator = AlarmPopupCoordinator()
-    private let timeFormatter: DateFormatter = {
+    private var randomClockLoopTask: Task<Void, Never>?
+    private let reminderWindowCoordinator = RandomClockReminderWindowCoordinator()
+    private let reminderTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm:ss"
         return formatter
     }()
 
     deinit {
-        schedulerTask?.cancel()
+        randomClockLoopTask?.cancel()
     }
 
-    func setEnabled(_ enabled: Bool) {
+    func setRandomClockEnabled(_ enabled: Bool) {
         guard enabled != isEnabled else { return }
 
         if enabled {
             isEnabled = true
-            startSchedulerLoop()
+            startRandomClockLoop()
         } else {
-            stopSchedulerLoop()
+            stopRandomClockLoop()
         }
     }
 
-    func setMinIntervalMinutes(_ value: Int) {
+    func setRandomClockMinIntervalMinutes(_ value: Int) {
         let sanitized = min(max(value, 1), 120)
         minIntervalMinutes = min(sanitized, maxIntervalMinutes)
     }
 
-    func setMaxIntervalMinutes(_ value: Int) {
+    func setRandomClockMaxIntervalMinutes(_ value: Int) {
         let sanitized = min(max(value, 1), 120)
         maxIntervalMinutes = max(sanitized, minIntervalMinutes)
     }
 
-    private func startSchedulerLoop() {
-        schedulerTask?.cancel()
+    private func startRandomClockLoop() {
+        randomClockLoopTask?.cancel()
 
-        schedulerTask = Task { [weak self] in
+        randomClockLoopTask = Task { [weak self] in
             guard let self else { return }
 
             while !Task.isCancelled, self.isEnabled {
@@ -52,7 +52,7 @@ final class RandomAlarmController: ObservableObject {
                 let maxSeconds = self.maxIntervalMinutes * 60
                 let delaySeconds = Int.random(in: minSeconds ... maxSeconds)
                 let fireTime = Date().addingTimeInterval(TimeInterval(delaySeconds))
-                self.statusText = "下一次提醒：\(self.timeFormatter.string(from: fireTime))"
+                self.statusText = "下一次提醒：\(self.reminderTimeFormatter.string(from: fireTime))"
 
                 do {
                     try await Task.sleep(for: .seconds(delaySeconds))
@@ -65,7 +65,7 @@ final class RandomAlarmController: ObservableObject {
                 }
 
                 self.statusText = "提醒中..."
-                _ = await self.popupCoordinator.presentReminder(timeout: 10)
+                _ = await self.reminderWindowCoordinator.presentRandomClockReminder(timeout: 10)
                 self.statusText = self.isEnabled ? "已关闭提醒，准备下一次随机闹钟..." : "未开启"
             }
 
@@ -75,11 +75,11 @@ final class RandomAlarmController: ObservableObject {
         }
     }
 
-    private func stopSchedulerLoop() {
+    private func stopRandomClockLoop() {
         isEnabled = false
-        schedulerTask?.cancel()
-        schedulerTask = nil
-        popupCoordinator.dismissIfNeeded()
+        randomClockLoopTask?.cancel()
+        randomClockLoopTask = nil
+        reminderWindowCoordinator.dismissReminderIfNeeded()
         statusText = "未开启"
     }
 }

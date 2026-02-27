@@ -1,32 +1,32 @@
 import AppKit
 import SwiftUI
 
-enum ReminderDismissReason {
-    case manual
-    case timeout
-    case forceClosed
+enum RandomClockReminderDismissReason {
+    case manualDismiss
+    case timeoutAutoDismiss
+    case forceClosedBySystem
 }
 
 @MainActor
-final class AlarmPopupCoordinator {
-    private var popupWindow: NSWindow?
-    private var popupDelegate: AlarmPopupWindowDelegate?
-    private var timeoutTask: Task<Void, Never>?
-    private var continuation: CheckedContinuation<ReminderDismissReason, Never>?
-    private var activeSessionID: UUID?
+final class RandomClockReminderWindowCoordinator {
+    private var reminderWindow: NSWindow?
+    private var reminderWindowDelegate: RandomClockReminderWindowDelegate?
+    private var autoDismissTask: Task<Void, Never>?
+    private var dismissContinuation: CheckedContinuation<RandomClockReminderDismissReason, Never>?
+    private var activeReminderSessionID: UUID?
 
-    func presentReminder(timeout: TimeInterval) async -> ReminderDismissReason {
-        forceFinishCurrentSession(reason: .forceClosed)
+    func presentRandomClockReminder(timeout: TimeInterval) async -> RandomClockReminderDismissReason {
+        forceCompleteCurrentReminderSession(reason: .forceClosedBySystem)
 
         let sessionID = UUID()
-        activeSessionID = sessionID
+        activeReminderSessionID = sessionID
 
         return await withCheckedContinuation { continuation in
-            self.continuation = continuation
+            self.dismissContinuation = continuation
 
-            let contentView = ReminderPopupView {
+            let contentView = RandomClockReminderPopupView {
                 [weak self] in
-                self?.completeSession(sessionID: sessionID, reason: .manual)
+                self?.completeReminderSession(sessionID: sessionID, reason: .manualDismiss)
             }
 
             let host = NSHostingController(rootView: contentView)
@@ -38,60 +38,60 @@ final class AlarmPopupCoordinator {
             window.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
             window.center()
 
-            let delegate = AlarmPopupWindowDelegate { [weak self] in
-                self?.completeSession(sessionID: sessionID, reason: .manual)
+            let delegate = RandomClockReminderWindowDelegate { [weak self] in
+                self?.completeReminderSession(sessionID: sessionID, reason: .manualDismiss)
             }
 
-            popupWindow = window
-            popupDelegate = delegate
+            reminderWindow = window
+            reminderWindowDelegate = delegate
             window.delegate = delegate
 
             window.makeKeyAndOrderFront(nil)
             NSApplication.shared.activate(ignoringOtherApps: true)
 
-            timeoutTask = Task { [weak self] in
+            autoDismissTask = Task { [weak self] in
                 try? await Task.sleep(for: .seconds(timeout))
                 await MainActor.run {
-                    self?.completeSession(sessionID: sessionID, reason: .timeout)
+                    self?.completeReminderSession(sessionID: sessionID, reason: .timeoutAutoDismiss)
                 }
             }
         }
     }
 
-    func dismissIfNeeded() {
-        forceFinishCurrentSession(reason: .forceClosed)
+    func dismissReminderIfNeeded() {
+        forceCompleteCurrentReminderSession(reason: .forceClosedBySystem)
     }
 
-    private func completeSession(sessionID: UUID, reason: ReminderDismissReason) {
-        guard activeSessionID == sessionID else { return }
-        activeSessionID = nil
+    private func completeReminderSession(sessionID: UUID, reason: RandomClockReminderDismissReason) {
+        guard activeReminderSessionID == sessionID else { return }
+        activeReminderSessionID = nil
 
-        timeoutTask?.cancel()
-        timeoutTask = nil
+        autoDismissTask?.cancel()
+        autoDismissTask = nil
 
-        if let popupWindow {
-            self.popupWindow = nil
-            popupDelegate = nil
-            popupWindow.delegate = nil
-            popupWindow.orderOut(nil)
-            popupWindow.close()
+        if let reminderWindow {
+            self.reminderWindow = nil
+            reminderWindowDelegate = nil
+            reminderWindow.delegate = nil
+            reminderWindow.orderOut(nil)
+            reminderWindow.close()
         }
 
-        continuation?.resume(returning: reason)
-        continuation = nil
+        dismissContinuation?.resume(returning: reason)
+        dismissContinuation = nil
     }
 
-    private func forceFinishCurrentSession(reason: ReminderDismissReason) {
-        guard activeSessionID != nil else { return }
-        let currentSessionID = activeSessionID
+    private func forceCompleteCurrentReminderSession(reason: RandomClockReminderDismissReason) {
+        guard activeReminderSessionID != nil else { return }
+        let currentSessionID = activeReminderSessionID
 
         if let currentSessionID {
-            completeSession(sessionID: currentSessionID, reason: reason)
+            completeReminderSession(sessionID: currentSessionID, reason: reason)
         }
     }
 }
 
-private final class AlarmPopupWindowDelegate: NSObject, NSWindowDelegate {
+private final class RandomClockReminderWindowDelegate: NSObject, NSWindowDelegate {
     private let onClose: () -> Void
 
     init(onClose: @escaping () -> Void) {

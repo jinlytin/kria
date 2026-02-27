@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct RandomAlarmCard: View {
-    @ObservedObject var controller: RandomAlarmController
+struct RandomClockCardView: View {
+    @ObservedObject var randomClockViewModel: RandomClockViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -48,17 +48,17 @@ struct RandomAlarmCard: View {
                     .background(Color(nsColor: .controlBackgroundColor))
                     .clipShape(Capsule())
 
-                Text("\(controller.minIntervalMinutes)～\(controller.maxIntervalMinutes) 分钟")
+                Text("\(randomClockViewModel.minIntervalMinutes)～\(randomClockViewModel.maxIntervalMinutes) 分钟")
                     .font(.system(size: 13, weight: .semibold))
             }
 
             HStack(spacing: 16) {
                 Stepper(value: minMinutesBinding, in: 1 ... 120) {
-                    Text("最小：\(controller.minIntervalMinutes) 分钟")
+                    Text("最小：\(randomClockViewModel.minIntervalMinutes) 分钟")
                 }
 
                 Stepper(value: maxMinutesBinding, in: 1 ... 120) {
-                    Text("最大：\(controller.maxIntervalMinutes) 分钟")
+                    Text("最大：\(randomClockViewModel.maxIntervalMinutes) 分钟")
                 }
             }
             .padding(12)
@@ -67,10 +67,10 @@ struct RandomAlarmCard: View {
 
             HStack(spacing: 8) {
                 Circle()
-                    .fill(controller.isEnabled ? Color.green : Color.gray)
+                    .fill(randomClockViewModel.isEnabled ? Color.green : Color.gray)
                     .frame(width: 8, height: 8)
 
-                Text(controller.statusText)
+                Text(randomClockViewModel.statusText)
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(.secondary)
             }
@@ -97,28 +97,28 @@ struct RandomAlarmCard: View {
 
     private var isEnabledBinding: Binding<Bool> {
         Binding(
-            get: { controller.isEnabled },
-            set: { controller.setEnabled($0) }
+            get: { randomClockViewModel.isEnabled },
+            set: { randomClockViewModel.setRandomClockEnabled($0) }
         )
     }
 
     private var minMinutesBinding: Binding<Int> {
         Binding(
-            get: { controller.minIntervalMinutes },
-            set: { controller.setMinIntervalMinutes($0) }
+            get: { randomClockViewModel.minIntervalMinutes },
+            set: { randomClockViewModel.setRandomClockMinIntervalMinutes($0) }
         )
     }
 
     private var maxMinutesBinding: Binding<Int> {
         Binding(
-            get: { controller.maxIntervalMinutes },
-            set: { controller.setMaxIntervalMinutes($0) }
+            get: { randomClockViewModel.maxIntervalMinutes },
+            set: { randomClockViewModel.setRandomClockMaxIntervalMinutes($0) }
         )
     }
 }
 
-struct ReminderPopupView: View {
-    let onDismiss: () -> Void
+struct RandomClockReminderPopupView: View {
+    let onConfirmDismiss: () -> Void
     @State private var shouldSwing = false
 
     var body: some View {
@@ -127,7 +127,7 @@ struct ReminderPopupView: View {
                 Spacer()
 
                 Image(systemName: "alarm.fill")
-                    .font(.system(size: 54, weight: .bold))
+                    .font(.system(size: 108, weight: .bold))
                     .foregroundStyle(
                         LinearGradient(
                             colors: [Color(red: 0.98, green: 0.54, blue: 0.18), Color(red: 0.98, green: 0.36, blue: 0.19)],
@@ -136,7 +136,7 @@ struct ReminderPopupView: View {
                         )
                     )
                     .rotationEffect(.degrees(shouldSwing ? 14 : -14))
-                    .offset(x: shouldSwing ? 10 : -10)
+                    .offset(x: shouldSwing ? 20 : -20)
                     .animation(
                         .easeInOut(duration: 0.18).repeatForever(autoreverses: true),
                         value: shouldSwing
@@ -148,7 +148,7 @@ struct ReminderPopupView: View {
                 Spacer()
             }
 
-            Text("时间到了，活动一下")
+            Text("Mind Break!")
                 .font(.system(size: 18, weight: .semibold))
 
             Text("10 秒后自动关闭并开始下一次随机提醒。")
@@ -158,7 +158,7 @@ struct ReminderPopupView: View {
                 Spacer()
 
                 Button("关闭并进入下一次提醒") {
-                    onDismiss()
+                    onConfirmDismiss()
                 }
                 .keyboardShortcut(.defaultAction)
             }
