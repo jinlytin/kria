@@ -13,3 +13,6 @@ DerivedData/
 # App bundles and symbols
 *.app
 *.dSYM
+
+# Local packages
+dist/

@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		AA864E542F31DCFC0087B19D /* kria.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = kria.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB1000012F4000000087B19D /* KriaWorkbench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KriaWorkbench.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -20,6 +21,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		AA864E512F31DCFC0087B19D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB1000032F4000020087B19D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,6 +49,7 @@
 			isa = PBXGroup;
 			children = (
 				AA864E542F31DCFC0087B19D /* kria.framework */,
+				AB1000012F4000000087B19D /* KriaWorkbench.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -81,6 +90,28 @@
 			productReference = AA864E542F31DCFC0087B19D /* kria.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		AB1000062F4000050087B19D /* KriaWorkbench */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB1000092F4000080087B19D /* Build configuration list for PBXNativeTarget "KriaWorkbench" */;
+			buildPhases = (
+				AB1000052F4000040087B19D /* Sources */,
+				AB1000032F4000020087B19D /* Frameworks */,
+				AB1000042F4000030087B19D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AA864E562F31DCFC0087B19D /* kria */,
+			);
+			name = KriaWorkbench;
+			packageProductDependencies = (
+			);
+			productName = KriaWorkbench;
+			productReference = AB1000012F4000000087B19D /* KriaWorkbench.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -92,6 +123,9 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					AA864E532F31DCFC0087B19D = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					AB1000062F4000050087B19D = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -110,6 +144,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				AB1000062F4000050087B19D /* KriaWorkbench */,
 				AA864E532F31DCFC0087B19D /* kria */,
 			);
 		};
@@ -123,10 +158,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB1000042F4000030087B19D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AA864E502F31DCFC0087B19D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB1000052F4000040087B19D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -330,6 +379,44 @@
 			};
 			name = Release;
 		};
+		AB1000072F4000060087B19D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = childe.kria.workbench;
+				PRODUCT_NAME = KriaWorkbench;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AB1000082F4000070087B19D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = childe.kria.workbench;
+				PRODUCT_NAME = KriaWorkbench;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -347,6 +434,15 @@
 			buildConfigurations = (
 				AA864E5E2F31DCFC0087B19D /* Debug */,
 				AA864E5F2F31DCFC0087B19D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB1000092F4000080087B19D /* Build configuration list for PBXNativeTarget "KriaWorkbench" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB1000072F4000060087B19D /* Debug */,
+				AB1000082F4000070087B19D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

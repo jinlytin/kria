@@ -11,7 +11,6 @@ import SwiftUI
 
 public struct WorkbenchView: View {
     @StateObject private var randomAlarm = RandomAlarmController()
-
     public init() {}
 
     public var body: some View {
@@ -84,8 +83,24 @@ private struct RandomAlarmCard: View {
                     .toggleStyle(.switch)
             }
 
-            Text("开启后每隔 3～5 分钟弹窗提醒一次。")
+            Text("开启后每隔 \(controller.minIntervalMinutes)～\(controller.maxIntervalMinutes) 分钟弹窗提醒一次。")
                 .foregroundStyle(.secondary)
+
+            HStack(spacing: 16) {
+                Stepper(
+                    value: minMinutesBinding,
+                    in: 1 ... 120
+                ) {
+                    Text("最小：\(controller.minIntervalMinutes) 分钟")
+                }
+
+                Stepper(
+                    value: maxMinutesBinding,
+                    in: 1 ... 120
+                ) {
+                    Text("最大：\(controller.maxIntervalMinutes) 分钟")
+                }
+            }
 
             Text(controller.statusText)
                 .font(.system(size: 13, weight: .medium))
@@ -107,12 +122,28 @@ private struct RandomAlarmCard: View {
             set: { controller.setEnabled($0) }
         )
     }
+
+    private var minMinutesBinding: Binding<Int> {
+        Binding(
+            get: { controller.minIntervalMinutes },
+            set: { controller.setMinIntervalMinutes($0) }
+        )
+    }
+
+    private var maxMinutesBinding: Binding<Int> {
+        Binding(
+            get: { controller.maxIntervalMinutes },
+            set: { controller.setMaxIntervalMinutes($0) }
+        )
+    }
 }
 
 @MainActor
 final class RandomAlarmController: ObservableObject {
     @Published private(set) var isEnabled = false
     @Published private(set) var statusText = "未开启"
+    @Published private(set) var minIntervalMinutes = 3
+    @Published private(set) var maxIntervalMinutes = 5
 
     private var schedulerTask: Task<Void, Never>?
     private let popupCoordinator = AlarmPopupCoordinator()
@@ -137,6 +168,16 @@ final class RandomAlarmController: ObservableObject {
         }
     }
 
+    func setMinIntervalMinutes(_ value: Int) {
+        let sanitized = min(max(value, 1), 120)
+        minIntervalMinutes = min(sanitized, maxIntervalMinutes)
+    }
+
+    func setMaxIntervalMinutes(_ value: Int) {
+        let sanitized = min(max(value, 1), 120)
+        maxIntervalMinutes = max(sanitized, minIntervalMinutes)
+    }
+
     private func startSchedulerLoop() {
         schedulerTask?.cancel()
 
@@ -144,7 +185,9 @@ final class RandomAlarmController: ObservableObject {
             guard let self else { return }
 
             while !Task.isCancelled, self.isEnabled {
-                let delaySeconds = Int.random(in: 180 ... 300)
+                let minSeconds = self.minIntervalMinutes * 60
+                let maxSeconds = self.maxIntervalMinutes * 60
+                let delaySeconds = Int.random(in: minSeconds ... maxSeconds)
                 let fireTime = Date().addingTimeInterval(TimeInterval(delaySeconds))
                 self.statusText = "下一次提醒：\(self.timeFormatter.string(from: fireTime))"
 
