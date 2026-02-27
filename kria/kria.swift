@@ -71,10 +71,34 @@ private struct RandomAlarmCard: View {
     @ObservedObject var controller: RandomAlarmController
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("随机闹钟")
-                    .font(.system(size: 22, weight: .semibold))
+                HStack(spacing: 12) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color(red: 0.16, green: 0.42, blue: 0.88), Color(red: 0.21, green: 0.67, blue: 0.89)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 44, height: 44)
+
+                        Image(systemName: "alarm.fill")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("随机闹钟")
+                            .font(.system(size: 22, weight: .semibold))
+
+                        Text("专注节奏提醒")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(.secondary)
+                    }
+                }
 
                 Spacer()
 
@@ -83,8 +107,17 @@ private struct RandomAlarmCard: View {
                     .toggleStyle(.switch)
             }
 
-            Text("开启后每隔 \(controller.minIntervalMinutes)～\(controller.maxIntervalMinutes) 分钟弹窗提醒一次。")
-                .foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                Label("区间", systemImage: "timer")
+                    .font(.system(size: 12, weight: .semibold))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .background(Color(nsColor: .controlBackgroundColor))
+                    .clipShape(Capsule())
+
+                Text("\(controller.minIntervalMinutes)～\(controller.maxIntervalMinutes) 分钟")
+                    .font(.system(size: 13, weight: .semibold))
+            }
 
             HStack(spacing: 16) {
                 Stepper(
@@ -101,19 +134,38 @@ private struct RandomAlarmCard: View {
                     Text("最大：\(controller.maxIntervalMinutes) 分钟")
                 }
             }
+            .padding(12)
+            .background(Color(nsColor: .controlBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
 
-            Text(controller.statusText)
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                Circle()
+                    .fill(controller.isEnabled ? Color.green : Color.gray)
+                    .frame(width: 8, height: 8)
+
+                Text(controller.statusText)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 8)
+            .background(Color(nsColor: .controlBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: 9))
         }
-        .padding(18)
+        .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(nsColor: .windowBackgroundColor))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(Color(nsColor: .separatorColor), lineWidth: 1)
+        .background(
+            LinearGradient(
+                colors: [Color(nsColor: .windowBackgroundColor), Color(nsColor: .underPageBackgroundColor)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
         )
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14)
+                .strokeBorder(Color(nsColor: .separatorColor).opacity(0.8), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
     private var isEnabledBinding: Binding<Bool> {
