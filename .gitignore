@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Xcode user-specific
+xcuserdata/
+*.xcuserstate
+
+# Build artifacts
+.build/
+.build_release/
+DerivedData/
+
+# App bundles and symbols
+*.app
+*.dSYM
