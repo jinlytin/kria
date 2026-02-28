@@ -13,6 +13,7 @@ public struct WorkbenchView: View {
         }
         .padding(24)
         .frame(minWidth: 620, minHeight: 380, alignment: .topLeading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
 

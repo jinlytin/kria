@@ -14,6 +14,7 @@ final class RandomClockReminderWindowCoordinator {
     private var autoDismissTask: Task<Void, Never>?
     private var dismissContinuation: CheckedContinuation<RandomClockReminderDismissReason, Never>?
     private var activeReminderSessionID: UUID?
+    private let reminderTonePlayer = RandomClockReminderTonePlayer()
 
     func presentRandomClockReminder(timeout: TimeInterval) async -> RandomClockReminderDismissReason {
         forceCompleteCurrentReminderSession(reason: .forceClosedBySystem)
@@ -48,6 +49,7 @@ final class RandomClockReminderWindowCoordinator {
 
             window.makeKeyAndOrderFront(nil)
             NSApplication.shared.activate(ignoringOtherApps: true)
+            reminderTonePlayer.startRinging()
 
             autoDismissTask = Task { [weak self] in
                 try? await Task.sleep(for: .seconds(timeout))
@@ -68,6 +70,7 @@ final class RandomClockReminderWindowCoordinator {
 
         autoDismissTask?.cancel()
         autoDismissTask = nil
+        reminderTonePlayer.stopRinging()
 
         if let reminderWindow {
             self.reminderWindow = nil
@@ -101,5 +104,26 @@ private final class RandomClockReminderWindowDelegate: NSObject, NSWindowDelegat
 
     func windowWillClose(_ notification: Notification) {
         onClose()
+    }
+}
+
+@MainActor
+private final class RandomClockReminderTonePlayer {
+    private var ringTask: Task<Void, Never>?
+
+    func startRinging() {
+        guard ringTask == nil else { return }
+
+        ringTask = Task {
+            while !Task.isCancelled {
+                NSSound.beep()
+                try? await Task.sleep(for: .milliseconds(900))
+            }
+        }
+    }
+
+    func stopRinging() {
+        ringTask?.cancel()
+        ringTask = nil
     }
 }
