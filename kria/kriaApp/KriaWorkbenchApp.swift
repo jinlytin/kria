@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 @main
@@ -6,5 +7,6 @@ struct KriaWorkbenchApp: App {
         WindowGroup("Kria 工作台") {
             WorkbenchView()
         }
+        .windowStyle(.hiddenTitleBar)
     }
 }

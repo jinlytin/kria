@@ -11,7 +11,7 @@ struct RandomClockCardView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(
                                 LinearGradient(
-                                    colors: [Color(red: 0.16, green: 0.42, blue: 0.88), Color(red: 0.21, green: 0.67, blue: 0.89)],
+                                    colors: [Color(red: 0.45, green: 0.78, blue: 0.95).opacity(0.85), Color(red: 0.28, green: 0.62, blue: 0.85).opacity(0.85)],
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
@@ -83,7 +83,7 @@ struct RandomClockCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             LinearGradient(
-                colors: [Color(nsColor: .windowBackgroundColor), Color(nsColor: .underPageBackgroundColor)],
+                colors: [Color(red: 0.45, green: 0.78, blue: 0.95).opacity(0.85), Color(red: 0.28, green: 0.62, blue: 0.85).opacity(0.85)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
