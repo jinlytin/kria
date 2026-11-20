@@ -6,6 +6,7 @@ xcuserdata/
 *.xcuserstate
 
 # Build artifacts
+/build/
 .build/
 .build_release/
 DerivedData/

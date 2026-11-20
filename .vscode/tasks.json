@@ -1,0 +1,58 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Kria：编译工作台",
+            "type": "process",
+            "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
+            "args": [
+                "-quiet",
+                "-project",
+                "${workspaceFolder}/kria.xcodeproj",
+                "-scheme",
+                "KriaWorkbench",
+                "-configuration",
+                "Debug",
+                "-destination",
+                "platform=macOS,arch=arm64",
+                "-derivedDataPath",
+                "${workspaceFolder}/build",
+                "CODE_SIGNING_ALLOWED=NO",
+                "build"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+                }
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Kria：编译并启动",
+            "type": "process",
+            "command": "/usr/bin/open",
+            "args": [
+                "${workspaceFolder}/build/Build/Products/Debug/KriaWorkbench.app"
+            ],
+            "dependsOn": "Kria：编译工作台",
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}

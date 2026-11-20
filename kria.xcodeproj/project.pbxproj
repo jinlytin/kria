@@ -6,20 +6,69 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AB20000A2F4000090087B19D /* KriaBatchAccess.app in Embed Components */ = {isa = PBXBuildFile; fileRef = AB2000012F4000000087B19D /* KriaBatchAccess.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AB20000B2F40000A0087B19D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA864E4B2F31DCFC0087B19D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB2000062F4000050087B19D;
+			remoteInfo = KriaBatchAccess;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AB20000D2F40000C0087B19D /* Embed Components */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Helpers;
+			dstSubfolderSpec = 1;
+			files = (
+				AB20000A2F4000090087B19D /* KriaBatchAccess.app in Embed Components */,
+			);
+			name = "Embed Components";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		AB2000012F4000000087B19D /* KriaBatchAccess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KriaBatchAccess.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA864E542F31DCFC0087B19D /* kria.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = kria.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB1000012F4000000087B19D /* KriaWorkbench.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KriaWorkbench.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AB20000F2F40000E0087B19D /* Component resource exclusions */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = AB2000062F4000050087B19D /* KriaBatchAccess */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AA864E562F31DCFC0087B19D /* kria */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AB20000F2F40000E0087B19D /* Component resource exclusions */,
+			);
 			path = kria;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		AB2000032F4000020087B19D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AA864E512F31DCFC0087B19D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -50,6 +99,7 @@
 			children = (
 				AA864E542F31DCFC0087B19D /* kria.framework */,
 				AB1000012F4000000087B19D /* KriaWorkbench.app */,
+				AB2000012F4000000087B19D /* KriaBatchAccess.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,10 +147,12 @@
 				AB1000052F4000040087B19D /* Sources */,
 				AB1000032F4000020087B19D /* Frameworks */,
 				AB1000042F4000030087B19D /* Resources */,
+				AB20000D2F40000C0087B19D /* Embed Components */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AB20000C2F40000B0087B19D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				AA864E562F31DCFC0087B19D /* kria */,
@@ -110,6 +162,29 @@
 			);
 			productName = KriaWorkbench;
 			productReference = AB1000012F4000000087B19D /* KriaWorkbench.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AB2000062F4000050087B19D /* KriaBatchAccess */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB2000092F4000080087B19D /* Build configuration list for PBXNativeTarget "KriaBatchAccess" */;
+			buildPhases = (
+				AB2000052F4000040087B19D /* Sources */,
+				AB2000032F4000020087B19D /* Frameworks */,
+				AB2000042F4000030087B19D /* Resources */,
+				AB20000E2F40000D0087B19D /* Generate Component Icon */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AA864E562F31DCFC0087B19D /* kria */,
+			);
+			name = KriaBatchAccess;
+			packageProductDependencies = (
+			);
+			productName = KriaBatchAccess;
+			productReference = AB2000012F4000000087B19D /* KriaBatchAccess.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -145,12 +220,20 @@
 			projectRoot = "";
 			targets = (
 				AB1000062F4000050087B19D /* KriaWorkbench */,
+				AB2000062F4000050087B19D /* KriaBatchAccess */,
 				AA864E532F31DCFC0087B19D /* kria */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		AB2000042F4000030087B19D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AA864E522F31DCFC0087B19D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -167,7 +250,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		AB20000E2F40000D0087B19D /* Generate Component Icon */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/kria/components/batchAccess/BatchAccessIcon.swift",
+			);
+			name = "Generate Component Icon";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/BatchAccessIcon.icns",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -eu\nmkdir -p \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" \"${TEMP_DIR}/IconBuild/ModuleCache\"\n\"${TOOLCHAIN_DIR}/usr/bin/swiftc\" -parse-as-library -D ICON_EXPORT -sdk \"${SDKROOT}\" -module-cache-path \"${TEMP_DIR}/IconBuild/ModuleCache\" \"${SRCROOT}/kria/components/batchAccess/BatchAccessIcon.swift\" -o \"${TEMP_DIR}/IconBuild/Exporter\"\n\"${TEMP_DIR}/IconBuild/Exporter\" \"${TEMP_DIR}/IconBuild/BatchAccessIcon.iconset\"\n/usr/bin/iconutil -c icns \"${TEMP_DIR}/IconBuild/BatchAccessIcon.iconset\" -o \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BatchAccessIcon.icns\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		AB2000052F4000040087B19D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AA864E502F31DCFC0087B19D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,7 +293,65 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		AB20000C2F40000B0087B19D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AB2000062F4000050087B19D /* KriaBatchAccess */;
+			targetProxy = AB20000B2F40000A0087B19D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		AB2000072F4000060087B19D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "kria.xcodeproj/BatchAccess-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kria 批量访问";
+				INFOPLIST_KEY_CFBundleName = "Kria 批量访问";
+				INFOPLIST_KEY_LSUIElement = NO;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = childe.kria.batchaccess;
+				PRODUCT_NAME = KriaBatchAccess;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) BATCH_ACCESS_APP";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AB2000082F4000070087B19D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "kria.xcodeproj/BatchAccess-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kria 批量访问";
+				INFOPLIST_KEY_CFBundleName = "Kria 批量访问";
+				INFOPLIST_KEY_LSUIElement = NO;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = childe.kria.batchaccess;
+				PRODUCT_NAME = KriaBatchAccess;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) BATCH_ACCESS_APP";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		AA864E5B2F31DCFC0087B19D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -422,6 +589,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AB2000092F4000080087B19D /* Build configuration list for PBXNativeTarget "KriaBatchAccess" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB2000072F4000060087B19D /* Debug */,
+				AB2000082F4000070087B19D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AA864E4E2F31DCFC0087B19D /* Build configuration list for PBXProject "kria" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
