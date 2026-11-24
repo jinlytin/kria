@@ -1,98 +1,90 @@
 import SwiftUI
 
+private enum RandomClockStyle {
+    static let accent = Color(red: 0.28, green: 0.62, blue: 0.85)
+}
+
 struct RandomClockCardView: View {
     @ObservedObject var randomClockViewModel: RandomClockViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                HStack(spacing: 12) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(
-                                LinearGradient(
-                                    colors: [Color(red: 0.45, green: 0.78, blue: 0.95).opacity(0.85), Color(red: 0.28, green: 0.62, blue: 0.85).opacity(0.85)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 44, height: 44)
+            HStack(spacing: 12) {
+                Image(systemName: "alarm.fill")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 38, height: 38)
+                    .background(RandomClockStyle.accent, in: RoundedRectangle(cornerRadius: 8))
+                    .frame(width: 44, height: 44)
+                    .accessibilityLabel("随机闹钟")
 
-                        Image(systemName: "alarm.fill")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundStyle(.white)
-                    }
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("随机闹钟")
-                            .font(.system(size: 22, weight: .semibold))
-
-                        Text("专注节奏提醒")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(.secondary)
-                    }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("随机闹钟")
+                        .font(.system(size: 22, weight: .semibold))
+                    Text("随机间隔 · 专注提醒 · 自动关闭")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(.secondary)
                 }
 
                 Spacer()
 
-                Toggle("", isOn: isEnabledBinding)
-                    .labelsHidden()
+                Toggle("开启提醒", isOn: isEnabledBinding)
+                    .font(.system(size: 12, weight: .medium))
                     .toggleStyle(.switch)
-            }
-
-            HStack(spacing: 8) {
-                Label("区间", systemImage: "timer")
-                    .font(.system(size: 12, weight: .semibold))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 5)
-                    .background(Color(nsColor: .controlBackgroundColor))
-                    .clipShape(Capsule())
-
-                Text("\(randomClockViewModel.minIntervalMinutes)～\(randomClockViewModel.maxIntervalMinutes) 分钟")
-                    .font(.system(size: 13, weight: .semibold))
+                    .fixedSize()
             }
 
             HStack(spacing: 16) {
-                Stepper(value: minMinutesBinding, in: 1 ... 120) {
-                    Text("最小：\(randomClockViewModel.minIntervalMinutes) 分钟")
-                }
-
-                Stepper(value: maxMinutesBinding, in: 1 ... 120) {
-                    Text("最大：\(randomClockViewModel.maxIntervalMinutes) 分钟")
-                }
+                configurationView
+                statusView
+                Spacer(minLength: 0)
             }
-            .padding(12)
-            .background(Color(nsColor: .controlBackgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-
-            HStack(spacing: 8) {
-                Circle()
-                    .fill(randomClockViewModel.isEnabled ? Color.green : Color.gray)
-                    .frame(width: 8, height: 8)
-
-                Text(randomClockViewModel.statusText)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
-            .background(Color(nsColor: .controlBackgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: 9))
         }
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            LinearGradient(
-                colors: [Color(red: 0.45, green: 0.78, blue: 0.95).opacity(0.85), Color(red: 0.28, green: 0.62, blue: 0.85).opacity(0.85)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .strokeBorder(Color(nsColor: .separatorColor).opacity(0.8), lineWidth: 1)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Color.white.opacity(0.55), lineWidth: 1))
+        .shadow(color: RandomClockStyle.accent.opacity(0.10), radius: 18, y: 8)
+        .tint(RandomClockStyle.accent)
+    }
+
+    private var configurationView: some View {
+        HStack(spacing: 12) {
+            Label("提醒区间", systemImage: "timer")
+                .foregroundStyle(.secondary)
+                .fixedSize()
+
+            Stepper(value: minMinutesBinding, in: 1 ... 120) {
+                Text("最小：\(randomClockViewModel.minIntervalMinutes) 分钟")
+                    .monospacedDigit()
+            }
+            .fixedSize(horizontal: true, vertical: false)
+
+            Stepper(value: maxMinutesBinding, in: 1 ... 120) {
+                Text("最大：\(randomClockViewModel.maxIntervalMinutes) 分钟")
+                    .monospacedDigit()
+            }
+            .fixedSize(horizontal: true, vertical: false)
+        }
+        .font(.system(size: 14, weight: .medium))
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 10))
+        .help("支持 1～120 分钟，区间调整将在下一轮提醒生效。")
+    }
+
+    private var statusView: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(randomClockViewModel.isEnabled ? Color.green : Color.secondary)
+                .frame(width: 6, height: 6)
+                .accessibilityHidden(true)
+            Text(randomClockViewModel.statusText)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(randomClockViewModel.isEnabled ? Color.primary : Color.secondary)
+        }
+        .fixedSize(horizontal: true, vertical: false)
+        .accessibilityElement(children: .combine)
     }
 
     private var isEnabledBinding: Binding<Bool> {
@@ -128,13 +120,7 @@ struct RandomClockReminderPopupView: View {
 
                 Image(systemName: "alarm.fill")
                     .font(.system(size: 108, weight: .bold))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(red: 0.98, green: 0.54, blue: 0.18), Color(red: 0.98, green: 0.36, blue: 0.19)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
+                    .foregroundStyle(RandomClockStyle.accent)
                     .rotationEffect(.degrees(shouldSwing ? 14 : -14))
                     .offset(x: shouldSwing ? 20 : -20)
                     .animation(
@@ -165,5 +151,6 @@ struct RandomClockReminderPopupView: View {
         }
         .padding(20)
         .frame(width: 400)
+        .tint(RandomClockStyle.accent)
     }
 }

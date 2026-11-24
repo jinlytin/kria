@@ -6,9 +6,9 @@ struct CustomsFeatureView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 12) {
                 Image(nsImage: CustomsIcon.image).resizable().scaledToFit().frame(width: 44, height: 44)
-                    .accessibilityLabel("海关")
+                    .accessibilityLabel("抓包代理")
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("海关").font(.system(size: 22, weight: .semibold))
+                    Text("抓包代理").font(.system(size: 22, weight: .semibold))
                     Text("网络代理 · 实时抓包 · Header 改写").font(.system(size: 12, weight: .medium)).foregroundStyle(.secondary)
                 }
                 Spacer()
