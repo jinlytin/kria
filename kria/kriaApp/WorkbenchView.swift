@@ -24,6 +24,7 @@ public struct WorkbenchView: View {
                     }
 
                     BatchAccessFeatureView()
+                    CustomsFeatureView()
                     RandomClockFeatureView()
                 }
                 .padding(24)

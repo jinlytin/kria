@@ -1,7 +1,19 @@
 import AppKit
 import SwiftUI
 
-#if BATCH_ACCESS_APP
+#if CUSTOMS_APP
+@main
+@MainActor
+enum KriaCustomsApp {
+    static func main() {
+        let application = NSApplication.shared
+        let delegate = CustomsApplicationDelegate()
+        application.delegate = delegate
+        application.setActivationPolicy(.regular)
+        withExtendedLifetime(delegate) { application.run() }
+    }
+}
+#elseif BATCH_ACCESS_APP
 @main
 @MainActor
 enum KriaBatchAccessApp {
